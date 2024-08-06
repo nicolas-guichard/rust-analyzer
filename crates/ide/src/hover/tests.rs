@@ -8579,3 +8579,24 @@ fn main(a$0: T) {}
         "#]],
     );
 }
+
+#[test]
+fn hover_fn_ptr_from_generic_with_impl() {
+    check(
+        r#"
+fn bar<const WIDTH: u8>(_: impl Copy) {}
+fn test() {
+    let f$0 = bar::<3>;
+    f(4);
+}
+"#,
+        expect![[r#"
+            *f*
+
+            ```rust
+            // size = 0, align = 1
+            let f: fn bar<3>(i32)
+            ```
+        "#]],
+    );
+}
